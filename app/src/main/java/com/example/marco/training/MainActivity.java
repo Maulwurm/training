@@ -15,11 +15,14 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
-    public void openSnackbar(View view,String type){
-        Snackbar.make(view, "Replace with your own " + type, Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show();
-    }
+    private EditText etInsert;
+    private TextView tvShow;
 
+    /**
+     * =============================================================================================
+     * LIFE CYCLE METHODS
+     * =============================================================================================
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,83 +30,39 @@ public class MainActivity extends AppCompatActivity {
 
         Log.d("Activity","onCreate");
 
-        Button butt1 = (Button) findViewById(R.id.button);
-        butt1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                openSnackbar(view,"butt");
-            }
-        });
-
-        Button btLoad = (Button) findViewById(R.id.buttonLoad);
-
-        final EditText etInsert = (EditText) findViewById(R.id.edittextInsert);
-
-        final TextView tvShow = (TextView) findViewById(R.id.textviewShow);
-
-        btLoad.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //1. lade Text in die Variable
-
-                String textAusgabe;
-
-                textAusgabe = etInsert.getText().toString();
-
-                //2. Lade Text ins TextView
-
-                tvShow.setText(textAusgabe);
-
-            }
-        });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        Button butt1 = (Button) findViewById(R.id.button);
+        Button btLoad = (Button) findViewById(R.id.buttonLoad);
+        etInsert = (EditText) findViewById(R.id.edittextInsert);
+        tvShow = (TextView) findViewById(R.id.textviewShow);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                openSnackbar(view,"fab");
-            }
-        });
+        butt1.setOnClickListener(listener1);
+        fab.setOnClickListener(listener2);
+        btLoad.setOnClickListener(listener3);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+    private View.OnClickListener listener1 = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            openSnackbar(v,"butt");
         }
+    };
 
-        return super.onOptionsItemSelected(item);
-    }
+    private View.OnClickListener listener2 = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            openSnackbar(v,"fab");
+        }
+    };
+
+    private View.OnClickListener listener3 = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            textSwap(tvShow,etInsert);
+        }
+    };
 
     @Override
     protected void onStart() {
@@ -134,4 +93,47 @@ public class MainActivity extends AppCompatActivity {
         Log.d("Activy","onDestroy");
         super.onDestroy();
     }
+
+    /**
+     * =============================================================================================
+     * other
+     * =============================================================================================
+     */
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    public void openSnackbar(View view,String type){
+        Snackbar.make(view, "Replace with your own " + type, Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show();
+    }
+
+    /**
+     * Swaps text, loads text from the editText and sets the text in the textView
+     * @param textView displays text
+     * @param editText to enter values
+     */
+   public void textSwap(TextView textView, EditText editText){
+        textView.setText(editText.getText().toString());
+    }
+
 }
